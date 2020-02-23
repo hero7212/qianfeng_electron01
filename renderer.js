@@ -4,6 +4,30 @@
 const electron = require('electron')
 const fs = require('fs')
 
+// webview 实例
+const wb = document.querySelector('#wb')
+const loading = document.querySelector('#loading')
+wb.addEventListener('did-start-loading', () => {
+    console.log("loading...")
+    loading.innerHTML = "loading..."
+})
+wb.addEventListener('did-stop-loading', () => {
+    console.log("OK .")
+    loading.innerHTML = "OK ."
+    wb.insertCSS(`
+    #su {
+        background: red !important;
+    }
+    `)
+    wb.executeJavaScript(`
+        setTimeout(()=>{
+            alert(document.getElementById('su').value)
+        },2000)  
+    `)
+    wb.openDevTools()
+})
+
+
 function getProcessInfo() {
     console.log('getCPUUsage:', process.getCPUUsage())
     console.log('env:', process.env)
