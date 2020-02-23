@@ -7,25 +7,40 @@ const fs = require('fs')
 // webview 实例
 const wb = document.querySelector('#wb')
 const loading = document.querySelector('#loading')
-wb.addEventListener('did-start-loading', () => {
-    console.log("loading...")
-    loading.innerHTML = "loading..."
+
+let subWin = null
+function openNewWindow() {
+    subWin = window.open('popup_page.html', 'baidu')
+}
+
+function closeWindow() {
+    subWin.close()
+}
+
+window.addEventListener('message', (msg) => {
+    console.log('接收到的消息：', msg)
 })
-wb.addEventListener('did-stop-loading', () => {
-    console.log("OK .")
-    loading.innerHTML = "OK ."
-    wb.insertCSS(`
-    #su {
-        background: red !important;
-    }
-    `)
-    wb.executeJavaScript(`
-        setTimeout(()=>{
-            alert(document.getElementById('su').value)
-        },2000)  
-    `)
-    wb.openDevTools()
-})
+
+
+// wb.addEventListener('did-start-loading', () => {
+//     console.log("loading...")
+//     loading.innerHTML = "loading..."
+// })
+// wb.addEventListener('did-stop-loading', () => {
+//     console.log("OK .")
+//     loading.innerHTML = "OK ."
+//     wb.insertCSS(`
+//     #su {
+//         background: red !important;
+//     }
+//     `)
+//     wb.executeJavaScript(`
+//         setTimeout(()=>{
+//             alert(document.getElementById('su').value)
+//         },2000)  
+//     `)
+//     wb.openDevTools()
+// })
 
 
 function getProcessInfo() {
